@@ -1,15 +1,10 @@
 name: CI Pipeline - E2E Tests
 
 on:
-  # Execução por push
   push:
     branches:
       - main
-
-  # Execução manual
   workflow_dispatch:
-
-  # Execução agendada
   schedule:
     - cron: '0 * * * *'
 
@@ -30,13 +25,15 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
+      - name: Instalar navegadores do Playwright
+        run: npx playwright install --with-deps
+
       - name: Executar testes E2E
         run: npm run test:e2e
 
-      # Geração / armazenamento do relatório
       - name: Publicar relatório de testes
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: relatorio-testes
-          path: reports/
+          path: playwright-report/
