@@ -25,11 +25,16 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
-      - name: Instalar navegadores do Playwright
-        run: npx playwright install --with-deps
-
       - name: Executar testes E2E
         run: npm run test:e2e
+
+      - name: Listar arquivos gerados
+        if: always()
+        run: |
+          echo "=== Arquivos e pastas gerados ==="
+          find . -maxdepth 3 -type d
+          echo "=== Arquivos ==="
+          find . -maxdepth 3 -type f
 
       - name: Publicar relatório de testes
         if: always()
@@ -37,3 +42,4 @@ jobs:
         with:
           name: relatorio-testes
           path: playwright-report/
+          if-no-files-found: warn
