@@ -9,10 +9,15 @@ run-name: >
   }
 
 on:
+  # Execução por push
   push:
     branches:
       - main
+
+  # Execução manual
   workflow_dispatch:
+
+  # Execução agendada
   schedule:
     - cron: '0 * * * *'
 
@@ -31,20 +36,6 @@ jobs:
             echo "Execução iniciada MANUALMENTE pelo usuário"
           elif [ "${{ github.event_name }}" = "schedule" ]; then
             echo "Execução iniciada por AGENDAMENTO (schedule)"
-          fi
-
-      - name: Registrar resumo da execução
-        run: |
-          echo "## Resumo da execução" >> $GITHUB_STEP_SUMMARY
-          echo "- Workflow: CI Pipeline - E2E Tests" >> $GITHUB_STEP_SUMMARY
-          echo "- Evento: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
-
-          if [ "${{ github.event_name }}" = "push" ]; then
-            echo "- Tipo: Execução por Push" >> $GITHUB_STEP_SUMMARY
-          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "- Tipo: Execução Manual" >> $GITHUB_STEP_SUMMARY
-          elif [ "${{ github.event_name }}" = "schedule" ]; then
-            echo "- Tipo: Execução Agendada" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Checkout do repositório
