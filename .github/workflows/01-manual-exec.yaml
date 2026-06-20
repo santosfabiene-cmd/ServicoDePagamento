@@ -29,7 +29,7 @@ jobs:
 
       - name: Instalar dependências
         run: npm install
-
+          #Relatório de testes E2E
       - name: Executar testes E2E e gerar relatório
         run: npm run test:e2e
 
