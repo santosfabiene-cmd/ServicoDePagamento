@@ -1,32 +1,38 @@
-name: CI Pipeline - Pós Manual
+name: CI Pipeline - E2E Tests
 
 on:
+  # Execução por push
   workflow_run:
     workflows: ["Manual Execution"]
     types:
       - completed
 
+  # Execução manual
+  workflow_dispatch:
+
+  # Execução agendada
   schedule:
     - cron: '0 * * * *'
 
 jobs:
   e2e-tests:
-    if: ${{ github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Identificar tipo de execução
         run: |
           echo "## Resumo da execução" >> $GITHUB_STEP_SUMMARY
+          echo "- Workflow: CI Pipeline - E2E Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- Evento: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
 
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            echo "- Workflow: CI Pipeline - Pós Manual" >> $GITHUB_STEP_SUMMARY
-            echo "- Evento: workflow_run" >> $GITHUB_STEP_SUMMARY
             echo "- Tipo: Execução após Manual" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "- Tipo: Execução Manual" >> $GITHUB_STEP_SUMMARY
           elif [ "${{ github.event_name }}" = "schedule" ]; then
-            echo "- Workflow: CI Pipeline - Pós Manual" >> $GITHUB_STEP_SUMMARY
-            echo "- Evento: schedule" >> $GITHUB_STEP_SUMMARY
             echo "- Tipo: Execução Agendada" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- Tipo: Outro evento" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Checkout do repositório
@@ -41,10 +47,18 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
-      - name: Executar testes E2E
+      - name: Executar testes automatizados
         run: npm run test:e2e
 
-      - name: Publicar relatório
+      - name: Gerar relatório de testes
+        if: always()
+        run: |
+          mkdir -p reports
+          echo "Relatório da execução do workflow" > reports/relatorio-testes.txt
+          echo "Evento: ${{ github.event_name }}" >> reports/relatorio-testes.txt
+          echo "Data: $(date)" >> reports/relatorio-testes.txt
+
+      - name: Publicar relatório de testes
         if: always()
         uses: actions/upload-artifact@v5
         with:
