@@ -2,10 +2,9 @@ name: CI Pipeline - E2E Tests
 
 on:
   # Execução por push
-  workflow_run:
-    workflows: ["Manual Execution"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
   # Execução manual
   workflow_dispatch:
@@ -25,8 +24,8 @@ jobs:
           echo "- Workflow: CI Pipeline - E2E Tests" >> $GITHUB_STEP_SUMMARY
           echo "- Evento: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
 
-          if [ "${{ github.event_name }}" = "workflow_run" ]; then
-            echo "- Tipo: Execução após Manual" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "- Tipo: Execução por Push" >> $GITHUB_STEP_SUMMARY
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "- Tipo: Execução Manual" >> $GITHUB_STEP_SUMMARY
           elif [ "${{ github.event_name }}" = "schedule" ]; then
