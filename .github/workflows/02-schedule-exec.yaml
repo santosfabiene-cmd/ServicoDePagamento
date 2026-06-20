@@ -2,7 +2,7 @@ name: 'Execution Agendada'
 
 on:
   schedule:
-    - cron: '5 23 * * 5'  
+    - cron: '0 0 * * 6'  
 jobs:
   e2e-tests:
     runs-on: ubuntu-latest
