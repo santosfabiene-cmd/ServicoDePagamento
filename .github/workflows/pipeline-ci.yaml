@@ -44,10 +44,11 @@ jobs:
           cache: npm
 
       - name: Instalar dependências
-        run: npm install
+        run: npm install -g yarn
+        
 
       - name: Executar testes automatizados
-        run: npm run test:e2e
+        run: yarn 
 
       - name: Gerar relatório de testes
         if: always()
