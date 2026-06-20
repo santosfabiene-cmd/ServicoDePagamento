@@ -5,8 +5,6 @@ Este repositório apresenta a implementação de uma pipeline de **Integração 
 
 A solução foi desenvolvida com o objetivo de automatizar a execução dos testes do sistema, permitindo que a aplicação seja validada em diferentes cenários de execução da pipeline, como disparo por push, execução manual e execução agendada.
 
----
-
 #2. Objetivo da Atividade
 Desenvolver uma pipeline de integração contínua contemplando os seguintes requisitos:
 
@@ -16,8 +14,6 @@ Desenvolver uma pipeline de integração contínua contemplando os seguintes req
 - Geração de **relatório de testes**
 - Armazenamento/publicação do relatório na pipeline
 - Documentação completa no **README**
-
----
 
 #3. Estrutura do Projeto
 
