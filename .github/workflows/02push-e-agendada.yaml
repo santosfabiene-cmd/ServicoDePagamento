@@ -1,0 +1,53 @@
+name: CI Pipeline - Pós Manual
+
+on:
+  workflow_run:
+    workflows: ["Manual Execution"]
+    types:
+      - completed
+
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  e2e-tests:
+    if: ${{ github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Identificar tipo de execução
+        run: |
+          echo "## Resumo da execução" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            echo "- Workflow: CI Pipeline - Pós Manual" >> $GITHUB_STEP_SUMMARY
+            echo "- Evento: workflow_run" >> $GITHUB_STEP_SUMMARY
+            echo "- Tipo: Execução após Manual" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "- Workflow: CI Pipeline - Pós Manual" >> $GITHUB_STEP_SUMMARY
+            echo "- Evento: schedule" >> $GITHUB_STEP_SUMMARY
+            echo "- Tipo: Execução Agendada" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Checkout do repositório
+        uses: actions/checkout@v5
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar testes E2E
+        run: npm run test:e2e
+
+      - name: Publicar relatório
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: relatorio-testes
+          path: reports/
+          if-no-files-found: warn

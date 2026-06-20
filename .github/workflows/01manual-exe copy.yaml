@@ -1,0 +1,39 @@
+name: Manual Execution
+
+on:
+  workflow_dispatch:
+
+jobs:
+  e2e-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Resumo da execução manual
+        run: |
+          echo "## Resumo da execução" >> $GITHUB_STEP_SUMMARY
+          echo "- Workflow: Manual Execution" >> $GITHUB_STEP_SUMMARY
+          echo "- Evento: workflow_dispatch" >> $GITHUB_STEP_SUMMARY
+          echo "- Tipo: Execução Manual" >> $GITHUB_STEP_SUMMARY
+
+      - name: Checkout do repositório
+        uses: actions/checkout@v5
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Executar testes E2E e gerar relatório
+        run: npm run test:e2e
+
+      - name: Publicar relatório de testes
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: relatorio-testes-manual
+          path: reports/
+          if-no-files-found: warn
