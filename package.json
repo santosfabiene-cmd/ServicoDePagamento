@@ -82,7 +82,8 @@
     "mocha": "^11.7.5"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "test:e2e": "mocha"
   },
   "keywords": [],
   "author": "",
