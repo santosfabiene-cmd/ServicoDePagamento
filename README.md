@@ -1,49 +1,59 @@
 # Pipeline de Integração Contínua com GitHub Actions
 
-## Descrição do projeto
-Este projeto apresenta a implementação de uma **pipeline de Integração Contínua (CI)** utilizando **GitHub Actions** para automatizar a execução de testes em um projeto Node.js.
+## Descrição do Projeto
 
-A pipeline foi configurada para executar testes automatizados do projeto **servicodepagamento**, gerar relatório de execução e publicar esse relatório como artefato da pipeline.
+Este projeto tem como objetivo demonstrar a implementação de uma **pipeline de Integração Contínua (CI)** utilizando **GitHub Actions** para automatizar a execução de testes de um sistema de **Serviço de Pagamento** desenvolvido em **Node.js**.
+
+A solução contempla:
+- execução automática por **push**;
+- execução **manual**;
+- execução **agendada**;
+- execução de **testes automatizados**;
+- geração de **relatório da execução**;
+- armazenamento/publicação do relatório na pipeline.
 
 ---
 
 ## Objetivo
-Desenvolver uma pipeline de integração contínua utilizando GitHub Actions para um projeto com testes automatizados, contemplando:
 
-- Execução por **push**
-- Execução **manual**
-- Execução **agendada (schedule)**
+Desenvolver uma pipeline de integração contínua capaz de validar automaticamente o funcionamento da aplicação sempre que houver alterações no repositório, garantindo maior confiabilidade no processo de desenvolvimento.
+
+A pipeline foi configurada para atender aos seguintes requisitos:
+
+- **Execução por push**
+- **Execução manual**
+- **Execução agendada (`schedule`)**
 - **Geração de relatório de testes**
-- **Armazenamento/publicação do relatório** na pipeline
-- Criação de um **README explicando a solução e os conceitos utilizados**
+- **Armazenamento/publicação do relatório na pipeline**
+- **Documentação da solução e dos conceitos utilizados**
 
 ---
 
-## Tecnologias utilizadas
+## Tecnologias Utilizadas
 
-- **Node.js**
-- **Mocha** – framework de testes
-- **Mochawesome** – geração de relatório de testes em HTML/JSON
-- **GitHub Actions** – automação da pipeline de CI
+- **GitHub Actions** — automação da pipeline de integração contínua
+- **Node.js** — ambiente de execução JavaScript
+- **Mocha** — framework de testes automatizados
+- **Node Assert** — biblioteca nativa para validação dos testes
+- **GitHub Artifacts** — armazenamento do relatório gerado na execução
 
 ---
 
-## Estrutura do projeto
+## Estrutura do Projeto
 
 ```bash
-servicodepagamento/
-│
+.
 ├── .github/
 │   └── workflows/
-│       └── ci.yml
-│
+│       └── ci-pipeline.yml
+├── src/
+│   └── ServicoDePagamento.js
 ├── test/
-│   └── ... arquivos de teste ...
-│
+│   └── ServicoDePagamento.test.js
+├── reports/
 ├── package.json
 ├── package-lock.json
 └── README.md
-
 # Workflows da Pipeline
 
 Para atender aos requisitos da atividade, foram criados workflows separados para cada tipo de execução:
