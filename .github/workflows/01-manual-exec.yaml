@@ -1,13 +1,5 @@
 name: CI Pipeline - E2E Tests
 
-run-name: >
-  CI Pipeline - ${
-    { github.event_name == 'push' && 'Execução por Push' ||
-       github.event_name == 'workflow_dispatch' && 'Execução Manual' ||
-       github.event_name == 'schedule' && 'Execução Agendada' ||
-       github.event_name }
-  }
-
 on:
   # Execução por push
   push:
@@ -28,14 +20,21 @@ jobs:
     steps:
       - name: Identificar tipo de execução
         run: |
-          echo "Tipo de evento: ${{ github.event_name }}"
+          echo "## Resumo da execução" >> $GITHUB_STEP_SUMMARY
+          echo "- Workflow: CI Pipeline - E2E Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- Evento: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
 
           if [ "${{ github.event_name }}" = "push" ]; then
+            echo "- Tipo: Execução por Push" >> $GITHUB_STEP_SUMMARY
             echo "Execução iniciada por PUSH na branch main"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "- Tipo: Execução Manual" >> $GITHUB_STEP_SUMMARY
             echo "Execução iniciada MANUALMENTE pelo usuário"
           elif [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "- Tipo: Execução Agendada" >> $GITHUB_STEP_SUMMARY
             echo "Execução iniciada por AGENDAMENTO (schedule)"
+          else
+            echo "- Tipo: Outro evento" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: Checkout do repositório
@@ -44,7 +43,7 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: latest
           cache: npm
 
       - name: Instalar dependências
