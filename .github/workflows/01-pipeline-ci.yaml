@@ -44,7 +44,7 @@ jobs:
           cache: npm
 
       - name: Instalar dependências
-        run: npm ci
+        run: npm install
 
       - name: Executar testes automatizados
         run: npm run test:e2e
