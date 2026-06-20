@@ -43,7 +43,7 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: latest
+          node-version: 20
           cache: npm
 
       - name: Instalar dependências
