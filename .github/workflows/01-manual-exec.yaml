@@ -38,12 +38,12 @@ jobs:
           fi
 
       - name: Checkout do repositório
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: latest
           cache: npm
 
       - name: Instalar dependências
@@ -54,7 +54,7 @@ jobs:
 
       - name: Publicar relatório de testes
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: relatorio-testes
           path: reports/
