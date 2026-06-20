@@ -40,11 +40,11 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: npm
 
       - name: Instalar dependências
-        run: npm install
+        run: npm ci
 
       - name: Executar testes automatizados
         run: npm run test:e2e
@@ -54,7 +54,11 @@ jobs:
         run: |
           mkdir -p reports
           echo "Relatório da execução do workflow" > reports/relatorio-testes.txt
+          echo "Workflow: CI Pipeline - E2E Tests" >> reports/relatorio-testes.txt
           echo "Evento: ${{ github.event_name }}" >> reports/relatorio-testes.txt
+          echo "Branch: ${{ github.ref_name }}" >> reports/relatorio-testes.txt
+          echo "Commit: ${{ github.sha }}" >> reports/relatorio-testes.txt
+          echo "Repositório: ${{ github.repository }}" >> reports/relatorio-testes.txt
           echo "Data: $(date)" >> reports/relatorio-testes.txt
 
       - name: Publicar relatório de testes
@@ -64,3 +68,10 @@ jobs:
           name: relatorio-testes
           path: reports/
           if-no-files-found: warn
+
+      - name: Registrar status final
+        if: always()
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Status final" >> $GITHUB_STEP_SUMMARY
+          echo "- Workflow concluída em: $(date)" >> $GITHUB_STEP_SUMMARY
