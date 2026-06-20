@@ -1,8 +1,11 @@
-# Execução manual
-name: 'Manual Execution'
+# Execução por push
+name: 'Deployment Workflow Execution'
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ['Manual Execution']
+    types:
+      - completed
 
 jobs:
   e2e-tests:
